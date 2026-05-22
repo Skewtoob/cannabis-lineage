@@ -1,0 +1,34 @@
+name: Sync working file → index.html
+
+# Runs whenever cannabis-lineage_50.html is pushed to main.
+# Copies it to index.html and commits the result so GitHub Pages
+# always serves the latest version without a manual copy step.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cannabis-lineage_50.html'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write          # needed to push the commit back
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Copy working file to index.html
+        run: cp cannabis-lineage_50.html index.html
+
+      - name: Commit and push if index.html changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          # Only commit if something actually changed
+          git diff --staged --quiet && echo "No changes, skipping commit." || \
+            git commit -m "chore: sync index.html from cannabis-lineage_50.html [skip ci]"
+          git push
