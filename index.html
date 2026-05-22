@@ -3604,11 +3604,37 @@ function rr(ctx,x,y,w,h,r){ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y
 
 function render(ctx,vi){
   ctx.clearRect(0,0,cW,cH);
-  const LABS=['Landrace / original heirloom','Foundational cultivars','Classic hybrids (80s-90s)','Modern staples (00s-10s)','Contemporary / boutique'];
-  ctx.font='500 10.5px DM Mono,monospace';ctx.textBaseline='top';ctx.textAlign='center';
-  for(let c=0;c<5;c++){ctx.fillStyle='#6b6960';ctx.fillText(LABS[c],20+c*(BW+CG)+BW/2,10);}
-  const hasSel = sel !== null;  // true when a strain is selected — drives dimming
-  const DIM = 0.13;             // opacity for non-connected nodes when dimming is active
+
+  // Scale-aware constants — everything adapts to node width
+  const NARROW = BW < 80;
+  const fSz   = Math.max(7,  Math.min(11, Math.round(BW * 0.10)));  // node label font size
+  const hSz   = Math.max(7,  Math.min(10, Math.round(BW * 0.09)));  // column header font size
+  const dotR  = NARROW ? 2   : 2.5;   // terpene dot radius
+  const dotSp = NARROW ? 6   : 8;     // terpene dot spacing
+  const dotX0 = NARROW ? 4   : 6;     // terpene dots x start offset
+  const dotY  = NARROW ? 4   : 5;     // terpene dots y from bottom
+  const availR= NARROW ? 2   : 3;     // availability dot radius
+  const availX= NARROW ? 4   : 6;     // availability dot offset from right
+  const availY= NARROW ? 4   : 6;     // availability dot offset from top
+  const ixOff = NARROW ? 8   : 13;    // icon x offset from right edge
+  const ixSp  = NARROW ? 8   : 12;    // spacing between icons
+
+  // Column headers — full text on wide layouts, abbreviated on narrow
+  const LABS = NARROW
+    ? ['Landrace','Found.','Classic','Modern','Contemp.']
+    : ['Landrace / original heirloom','Foundational cultivars','Classic hybrids (80s-90s)','Modern staples (00s-10s)','Contemporary / boutique'];
+  ctx.font=`500 ${hSz}px DM Mono,monospace`;ctx.textBaseline='top';ctx.textAlign='center';
+  for(let c=0;c<5;c++){
+    ctx.fillStyle='#6b6960';
+    // Clip header text to fit within node width
+    let hdr=LABS[c];
+    while(hdr.length>3&&ctx.measureText(hdr).width>BW-4){hdr=hdr.slice(0,-1);}
+    if(hdr!==LABS[c])hdr=hdr.trimEnd()+'…';
+    ctx.fillText(hdr,20+c*(BW+CG)+BW/2,10);
+  }
+
+  const hasSel = sel !== null;
+  const DIM = 0.13;
 
   // ── EDGES ──
   N.forEach(n=>{
@@ -3617,7 +3643,6 @@ function render(ctx,vi){
       if(!vi.has(p)||!pos[p])return;
       const f=pos[p],t=pos[n.id];
       const hi=hp.has(n.id)&&hp.has(p);
-      // Dim unrelated edges when something is selected
       ctx.globalAlpha = hasSel ? (hi ? 1 : DIM * 0.6) : 1;
       ctx.beginPath();ctx.strokeStyle=hi?'#a89f6e':'rgba(255,255,255,0.07)';ctx.lineWidth=hi?1.5:0.5;
       const mx=f.x+BW+(t.x-f.x-BW)/2;
@@ -3635,36 +3660,41 @@ function render(ctx,vi){
     const isSel=n.id===sel,isHi=hp.has(n.id);
     const hasD=!!n.dispute;
 
-    // Focus dimming: non-connected nodes ghost out
     const nodeAlpha = hasSel ? (isHi||isSel ? 1 : DIM) : 1;
     ctx.globalAlpha = nodeAlpha;
 
-    ctx.beginPath();rr(ctx,x,y,BW,BH,5);
+    ctx.beginPath();rr(ctx,x,y,BW,BH,4);
     ctx.fillStyle=s.fill;ctx.fill();
     ctx.strokeStyle=s.stroke;ctx.lineWidth=isSel?2.5:(isHi?1.5:0.5);ctx.stroke();
     if(isSel){ctx.beginPath();rr(ctx,x+2,y+2,BW-4,BH-4,3);ctx.strokeStyle=s.stroke;ctx.lineWidth=0.5;ctx.stroke();}
 
     const hasA=n.awards&&n.awards.length>0;
     const icons=(hasA?1:0)+(hasD?1:0);
+    const weight=isSel?'600':isHi?'500':'400';
     ctx.fillStyle=isHi||isSel?s.text:'rgba(200,196,186,0.7)';
-    ctx.font=`${isSel?'600':isHi?'500':'400'} 11px DM Sans,sans-serif`;
+    ctx.font=`${weight} ${fSz}px DM Sans,sans-serif`;
     ctx.textAlign='center';ctx.textBaseline='middle';
-    const mc=18-icons*2;
-    const lb=n.label.length>mc?n.label.slice(0,mc-1)+'...':n.label;
-    ctx.fillText(lb,x+BW/2-icons*4,y+BH/2);
-    let ix=x+BW-13;
-    if(hasA){ctx.fillStyle='#c08a20';ctx.font='bold 11px sans-serif';ctx.fillText('*',ix,y+BH/2-1);ix-=12;}
-    if(hasD){ctx.fillStyle='#c0603a';ctx.font='bold 10px sans-serif';ctx.fillText('!',ix,y+BH/2);}
 
-    // terpene dots — bottom-left, up to 3
+    // Measure-based truncation — adapts to actual node width
+    const maxW = BW - 8 - icons * ixSp;
+    let lb = n.label;
+    while(lb.length>2&&ctx.measureText(lb).width>maxW){lb=lb.slice(0,-1);}
+    if(lb!==n.label)lb=lb.trimEnd()+'…';
+    ctx.fillText(lb, x+BW/2-icons*(NARROW?3:4), y+BH/2);
+
+    let ix=x+BW-ixOff;
+    if(hasA){ctx.fillStyle='#c08a20';ctx.font=`bold ${fSz}px sans-serif`;ctx.fillText('*',ix,y+BH/2-1);ix-=ixSp;}
+    if(hasD){ctx.fillStyle='#c0603a';ctx.font=`bold ${fSz-1}px sans-serif`;ctx.fillText('!',ix,y+BH/2);}
+
+    // terpene dots — bottom-left, up to 3 (2 on very narrow nodes)
     if(n.terps&&n.terps.length){
-      const dots=n.terps.slice(0,3);
-      dots.forEach((t,i)=>{
+      const maxDots = NARROW ? 2 : 3;
+      n.terps.slice(0,maxDots).forEach((t,i)=>{
         ctx.beginPath();
         ctx.fillStyle=TC[t]||'#888';
         const dimmed=terpFilter&&terpFilter!==t;
         ctx.globalAlpha=nodeAlpha*(dimmed?0.25:1);
-        ctx.arc(x+6+i*8,y+BH-5,2.5,0,Math.PI*2);
+        ctx.arc(x+dotX0+i*dotSp,y+BH-dotY,dotR,0,Math.PI*2);
         ctx.fill();
       });
     }
@@ -3675,11 +3705,11 @@ function render(ctx,vi){
       ctx.globalAlpha=nodeAlpha*(availFilter&&availFilter!==n.avail?0.2:0.85);
       ctx.fillStyle=AC[n.avail];
       ctx.beginPath();
-      ctx.arc(x+BW-6,y+6,3,0,Math.PI*2);
+      ctx.arc(x+BW-availX,y+availY,availR,0,Math.PI*2);
       ctx.fill();
     }
 
-    ctx.globalAlpha=1; // reset after each node
+    ctx.globalAlpha=1;
   });
 }
 
