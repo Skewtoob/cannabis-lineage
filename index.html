@@ -80,7 +80,6 @@
   .avail-unknown{color:#9e9e9e;border-color:rgba(158,158,158,.4);background:rgba(158,158,158,.08);}
   .dispute-note{font-family:'DM Mono',monospace;font-size:10px;color:#c08a20;border:.5px solid rgba(192,138,32,.3);background:rgba(192,138,32,.06);border-radius:3px;padding:5px 8px;margin-bottom:8px;letter-spacing:.03em;line-height:1.5;}
   .pop-divider{border:none;border-top:.5px solid var(--border);margin:10px 0;}
-  #canvas-wrap{overflow:hidden;position:relative;width:100%;}
   #scroll-hint{display:none;}
 
   /* ═══════════════════════════════════════════
@@ -211,6 +210,9 @@
 
     /* ── Playground outer padding: breathe on narrow screens ── */
     #panel-playground { padding: 16px !important; }
+
+    /* ── Canvas: allow horizontal scroll so all 5 cols are reachable ── */
+    #canvas-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
   }
 
   @media (max-width: 480px) {
@@ -3468,12 +3470,14 @@ let BW=148, BH=36, CG=52, RG=8;
 
 function calcDims(){
   const wrap = document.getElementById('canvas-wrap');
-  const W = wrap ? Math.max(600, wrap.clientWidth) : 1000;
+  const rawW = wrap ? wrap.clientWidth : 1000;
+  const isMobile = rawW < 600;
+  const W = isMobile ? rawW : Math.max(600, rawW);
 
   // Horizontal: fill container width across 5 columns
   // 5*BW + 4*CG + 40 margins = W, with CG = 0.35*BW  =>  BW = (W-40)/6.4
-  BW = Math.max(110, Math.floor((W - 40) / 6.4));
-  CG = Math.max(28,  Math.floor(BW * 0.35));
+  BW = Math.max(isMobile ? 48 : 110, Math.floor((W - 40) / 6.4));
+  CG = Math.max(isMobile ? 12 : 28,  Math.floor(BW * 0.35));
 
   // Vertical: target 85% of viewport height so the chart fits without scrolling
   // Find tallest column across current visible nodes
@@ -3563,7 +3567,9 @@ function layout(){
   v.forEach(n=>{if(!bc[n.col])bc[n.col]=[];bc[n.col].push(n);});
   // cW fills the container exactly (calcDims ensures this)
   const wrap=document.getElementById('canvas-wrap');
-  cW = wrap ? Math.max(600, wrap.clientWidth) : 5*(BW+CG)+40;
+  const rawW=wrap?Math.max(1,wrap.clientWidth):1000;
+  const isMobile=rawW<600;
+  cW = isMobile ? Math.max(rawW,5*(BW+CG)+40) : Math.max(600,rawW);
   const mr=Math.max(...[0,1,2,3,4].map(c=>(bc[c]||[]).length),1);
   cH=Math.max(300,mr*(BH+RG)+80);
   pos={};
@@ -3688,19 +3694,24 @@ cv.addEventListener('click',e=>{
   if(h)pick(h.id,e.clientX,e.clientY);
   else{sel=null;hp=new Set();const dh=document.getElementById('dim-hint');if(dh)dh.style.display='none';layout();closeDetail();}
 });
+let _cvTouchX=0,_cvTouchY=0;
 cv.addEventListener('touchstart',e=>{
   if(e.touches.length!==1)return;
-  e.preventDefault();
-  const t=e.touches[0];
+  _cvTouchX=e.touches[0].clientX;_cvTouchY=e.touches[0].clientY;
+},{passive:true});
+cv.addEventListener('touchend',e=>{
+  if(e.changedTouches.length!==1)return;
+  const t=e.changedTouches[0];
+  const dx=t.clientX-_cvTouchX,dy=t.clientY-_cvTouchY;
+  if(dx*dx+dy*dy>64)return; // >8px movement = scroll, not a tap
   const r=cv.getBoundingClientRect();
-  const scale=cW/r.width;
-  const mx=(t.clientX-r.left)*scale;
-  const my=(t.clientY-r.top)*scale;
-  const pad=22*scale;
+  const mx=(t.clientX-r.left)*(cW/r.width);
+  const my=(t.clientY-r.top)*(cH/r.height);
+  const pad=14;
   const h=N.find(n=>{const p=pos[n.id];return p&&mx>=p.x-pad&&mx<=p.x+BW+pad&&my>=p.y-pad&&my<=p.y+BH+pad;});
   if(h)pick(h.id,t.clientX,t.clientY);
   else{sel=null;hp=new Set();const dh=document.getElementById('dim-hint');if(dh)dh.style.display='none';layout();closeDetail();}
-},{passive:false});
+},{passive:true});
 cv.addEventListener('mousemove',e=>{
   const r=cv.getBoundingClientRect();
   cv.style.cursor=hit((e.clientX-r.left)*(cW/r.width),(e.clientY-r.top)*(cH/r.height))?'pointer':'default';
