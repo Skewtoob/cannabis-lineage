@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Interactive cannabis genetics visualization — lineage bracket, origins map, strain comparison, and breeder's playground. 508 strains documented.">
+<meta name="description" content="Interactive cannabis genetics visualization — lineage bracket, origins map, strain comparison, and breeder's playground. 520 strains documented.">
 <title>Cannabis Lineage — Seedfinder Bracket v6</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
@@ -341,7 +341,7 @@
 
   <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.06em;margin-bottom:10px;">CLAUDE'S CONTRIBUTIONS</div>
   <div style="font-size:12px;color:var(--muted);line-height:1.85;margin-bottom:24px;">
-    Everything else: the data architecture; the visual design and color system; the canvas-based lineage chart rendering engine; the origins map with D3.js; the Compare tab with F1/F2/BX prediction; the Breeder's Playground scoring engine and UI; the reverse lineage search with ancestry filters and quick-add presets; the saved breeding projects system; the map zoom and pan; the column visibility toggles with strain counts; the focus dimming effect; the availability system; the region detail panel with agronomic grow data, light spectrum charts, and personal notes; the sub-pin zoom system for specific origin locations; The Vault deep archive tab with collapsible cards, sort controls, S/M/L text sizing, and the persistent strain detail panel with cannabinoid visualisation and terpene descriptors; and the research, writing, and verification of all <strong style="color:var(--text);">258 main-canvas strain entries</strong> plus <strong style="color:var(--text);">250 Vault entries</strong> (508 total) across 40 geographic regions. Claude also proposed the map zoom feature, the column toggle system, The Vault, and the split detail-panel layout.
+    Everything else: the data architecture; the visual design and color system; the canvas-based lineage chart rendering engine; the origins map with D3.js; the Compare tab with F1/F2/BX prediction; the Breeder's Playground scoring engine and UI; the reverse lineage search with ancestry filters and quick-add presets; the saved breeding projects system; the map zoom and pan; the column visibility toggles with strain counts; the focus dimming effect; the availability system; the region detail panel with agronomic grow data, light spectrum charts, and personal notes; the sub-pin zoom system for specific origin locations; The Vault deep archive tab with collapsible cards, sort controls, S/M/L text sizing, and the persistent strain detail panel with cannabinoid visualisation and terpene descriptors; and the research, writing, and verification of all <strong style="color:var(--text);">265 main-canvas strain entries</strong> plus <strong style="color:var(--text);">255 Vault entries</strong> (520 total) across 40 geographic regions. Claude also proposed the map zoom feature, the column toggle system, The Vault, and the split detail-panel layout.
   </div>
 
   <div style="font-size:12px;color:var(--muted);line-height:1.85;margin-bottom:28px;padding:14px 16px;background:var(--bg3);border-radius:4px;border-left:2px solid var(--accent);">
@@ -1701,6 +1701,67 @@ const N=[
   parents:[],
   terps:['myrcene','pinene','caryophyllene'],
   desc:'The Chitral landrace originates in the remote Chitral District of northwestern Pakistan, isolated by the Hindu Kush range and the Hindukush-Karakoram junction. Growing at extreme altitudes alongside food crops in a region of intense UV, short summers, and dramatic temperature swings, Chitral plants developed among the most resinous phenotypes in the landrace world — a direct adaptation to harsh mountain conditions. The genetics differ meaningfully from Kandahar and Mazar Afghani material: Chitral tends toward more purple coloring (anthocyanin expression in cool nights), a slightly more complex terpene profile, and a slightly longer flower time for its latitude. A key founding genetics source for many European indica and hashplant breeders, particularly in the Dutch and Spanish scenes of the 1980s and 90s.'},
+
+ // ── Bodhi Seeds additions ──
+ {id:'nepali-og',label:'Nepali OG',type:'hybrid',col:2,
+  origin:'Bodhi Seeds, USA, ~2012',thc:[18,24],cbd:[0.1,0.3],
+  awards:[],breeder:'Bodhi Seeds',year:2012,
+  flower:[63,70],yld:'medium',avail:'seed',dispute:null,
+  parents:['nepalese','og-kush-cut'],
+  terps:['myrcene','caryophyllene','pinene'],
+  desc:'Nepalese × OG Kush. Bodhi Seeds. One of Bodhi\'s foundational Himalayan-meets-American hybrids — threading high-altitude Nepalese landrace genetics into the OG Kush family. The result carries the earthy hash-plant depth of Himalayan material with the fuel-lemon-pine character of OG Kush. A building block in Bodhi\'s catalog, used as parent in Mother\'s Milk and other mountain-OG crosses. Represents Bodhi\'s philosophy of anchoring modern potency in authentic landrace diversity.'},
+
+ {id:'tigers-milk',label:'Tiger\'s Milk',type:'indica',col:3,
+  origin:'Bodhi Seeds, USA, ~2012',thc:[20,26],cbd:[0.1,0.2],
+  awards:[],breeder:'Bodhi Seeds',year:2012,
+  flower:[56,63],yld:'medium',avail:'seed',
+  dispute:'Pre-98 Bubba Kush (the true parent) is approximated here as Bubba Kush — the closest available documented entry. The authentic Tiger\'s Milk uses a specific Pre-98 Bubba Kush cut distinct from the stabilised seed-form Bubba Kush.',
+  parents:['bubba-kush','appalachia'],
+  terps:['myrcene','caryophyllene','pinene'],
+  desc:'Pre-98 Bubba Kush × Appalachia. Bodhi Seeds. One of Bodhi\'s flagship indica-leaning releases — a cross between the deeply sedating Pre-98 Bubba Kush and his own Appalachia hybrid (Green Crack × Tres Dawg). Tiger\'s Milk became a collector\'s favourite for its balanced yet potent effect: the earthy hash-funk of the Bubba Kush is lifted by Appalachia\'s bright cerebral character. Dense, resinous buds with a complex earthy-spice nose. Among the most recognised of Bodhi\'s classic releases alongside Snow Lotus and Goji OG.'},
+
+ {id:'mothers-milk',label:'Mother\'s Milk',type:'hybrid',col:3,
+  origin:'Bodhi Seeds, USA, ~2013',thc:[18,24],cbd:[0.1,0.2],
+  awards:[],breeder:'Bodhi Seeds',year:2013,
+  flower:[63,70],yld:'medium',avail:'seed',dispute:null,
+  parents:['nepali-og','appalachia'],
+  terps:['terpinolene','myrcene','caryophyllene'],
+  desc:'Nepali OG × Appalachia. Bodhi Seeds. A Himalayan-meets-American cross blending the earthy hash-spice character of Nepali OG (Nepalese × OG Kush) with the bright, cerebral energy of Appalachia (Green Crack × Tres Dawg). Mother\'s Milk is prized for its uplifting yet grounded effect and unusually complex terpene profile — terpinolene-forward with underlying earth and spice. Among the more sativa-leaning of Bodhi\'s mountain genetics crosses. Sought by collectors who want old-school complexity in a modern seed form.'},
+
+ // ── In House Genetics addition ──
+ {id:'terple',label:'Terple',type:'hybrid',col:4,
+  origin:'In House Genetics, California, USA, ~2019',thc:[22,28],cbd:[0.1,0.2],
+  awards:[],breeder:'In House Genetics',year:2019,
+  flower:[56,63],yld:'high',avail:'seed',dispute:null,
+  parents:['tropicana-cookies','slurricane'],
+  terps:['limonene','caryophyllene','myrcene'],
+  desc:'Tropicana Cookies × Slurricane. In House Genetics. One of In House\'s most celebrated candy-fruit crosses — pairing the vivid citrus-orange character of Tropicana Cookies with the deep grape-berry sweetness of Slurricane. The result is an intensely aromatic, dessert-forward hybrid with exceptional bag appeal: purple-tinged dense buds, an aroma of tangerine and grape candy, and a potent balanced effect. Terple became one of the more sought-after In House releases of the late 2010s alongside Slurricane itself, representing the pinnacle of boutique fruit-forward breeding.'},
+
+ // ── Seed Junky Genetics additions ──
+ {id:'gush-mints',label:'Gush Mints',type:'hybrid',col:4,
+  origin:'Seed Junky Genetics, California, USA, ~2020',thc:[23,29],cbd:[0.1,0.2],
+  awards:[],breeder:'Seed Junky Genetics',year:2020,
+  flower:[56,63],yld:'high',avail:'seed',dispute:null,
+  parents:['gushers','kush-mints'],
+  terps:['caryophyllene','limonene','myrcene'],
+  desc:'Gushers × Kush Mints. Seed Junky Genetics. A natural pairing within Seed Junky\'s own catalog — combining the tropical-fruit sweetness and heavy indica body of Gushers with the minty-OG freshness and exceptional resin coverage of Kush Mints. Gush Mints stacks both phenotypic strengths: the dense, frosty structure of Kush Mints and the vivid fruit-forward aroma of Gushers. One of the more sought-after Seed Junky crosses of the early 2020s, showing exceptional bag appeal in the California premium market. A direct descendant of two of the most influential strains of the 2010s boutique era.'},
+
+ {id:'biscotti-mintz',label:'Biscotti Mintz',type:'hybrid',col:4,
+  origin:'Seed Junky Genetics, California, USA, ~2021',thc:[24,30],cbd:[0.1,0.2],
+  awards:[],breeder:'Seed Junky Genetics',year:2021,
+  flower:[56,63],yld:'medium',avail:'seed',dispute:null,
+  parents:['biscotti','kush-mints'],
+  terps:['caryophyllene','linalool','limonene'],
+  desc:'Biscotti × Kush Mints. Seed Junky Genetics. Biscotti\'s creamy cookie-dough terpene profile — heavy with caryophyllene, limonene, and subtle linalool — is threaded into Kush Mints\'s minty-OG freshness to produce a strain of layered dessert-and-mint complexity. Dense, trichome-packed buds with a sophisticated multi-note nose. Among Seed Junky\'s most nuanced recent releases, sitting alongside Lilac Mints and Gush Mints as part of a run of Kush Mints crosses that cemented their early-2020s catalog. Potent and balanced, leaning slightly indica.'},
+
+ // ── Archive Seed Bank addition ──
+ {id:'layer-cake',label:'Layer Cake',type:'hybrid',col:4,
+  origin:'Archive Seed Bank, Oregon, USA, ~2019',thc:[24,30],cbd:[0.1,0.2],
+  awards:[],breeder:'Archive Seed Bank',year:2019,
+  flower:[56,63],yld:'medium',avail:'seed',dispute:null,
+  parents:['wedding-cake','gmo-cookies'],
+  terps:['caryophyllene','limonene','humulene'],
+  desc:'Wedding Cake × GMO Cookies. Archive Seed Bank. A meeting of two of the most dominant terpene profiles in the late 2010s boutique scene — Wedding Cake\'s sweet-tangy-vanilla-OG character and GMO\'s signature garlic-mushroom-onion pungency. The result is a complex, polarising nose: dessert sweetness over a savory chemical base, softened by caryophyllene depth. Dense, resin-heavy indica-dominant structure. Archive\'s Layer Cake sits in the same territory as their Dogwalker OG and Sin Mint Cookies — strains where two distinct lineages collide to produce something neither parent could achieve alone. A collector\'s strain for those who appreciate the more aggressive end of the terpene spectrum.'},
 
 ];
 
@@ -3456,6 +3517,51 @@ const NX=[
   terps:['caryophyllene','linalool','limonene'],parents:[],
   desc:'Kush Mints x Jealousy. Seed Junky Genetics. A logical pairing within Seed Junky\'s own catalog — two of their most successful recent strains crossed together. Kush Mints brings the minty-OG freshness; Jealousy contributes creamy Sherbet-Gelato sweetness and exceptional potency. The linalool-prominent terpene profile gives Lilac Mints an unusual floral-mint character that distinguishes it from Seed Junky\'s predominantly OG-forward releases. Dense, potent, visually exceptional.'},
 
+ // ── Bodhi Seeds (Vault) ──
+ {id:'space-monkey',label:'Space Monkey',type:'hybrid',
+  origin:'Bodhi Seeds, USA, ~2014',thc:[20,26],cbd:[0.1,0.2],
+  awards:[],breeder:'Bodhi Seeds',year:2014,
+  flower:[56,63],yld:'medium',avail:'seed',
+  terps:['terpinolene','myrcene','caryophyllene'],
+  parents:[],
+  desc:'Gorilla Glue #4 × Wookie 15. Bodhi Seeds. A collision between two very different worlds — GG4\'s extreme resin and diesel-coffee aroma crossed with Bodhi\'s own Wookie 15 (Appalachia × White 91). Space Monkey pulls GG4\'s unprecedented resin production into Bodhi\'s earthy, terpinolene-forward breeding philosophy. Dense, heavily coated buds with a complex nose bridging fuel and mountain herbs. One of Bodhi\'s more potent vault entries — sought by collectors who want GG4-level resin with the characteristic multi-layered terpene complexity of Bodhi\'s catalog.'},
+
+ // ── In House Genetics (Vault) ──
+ {id:'jmo',label:'JMO',type:'hybrid',
+  origin:'In House Genetics, California, USA, ~2020',thc:[24,30],cbd:[0.1,0.2],
+  awards:[],breeder:'In House Genetics',year:2020,
+  flower:[56,63],yld:'medium',avail:'seed',
+  terps:['caryophyllene','humulene','limonene'],
+  parents:[],
+  desc:'GMO × Jelly Breath. In House Genetics. JMO stacks the garlic-mushroom-onion pungency of GMO Cookies (Chemdawg × GSC) into Jelly Breath\'s fruit-gas complexity. The result layers two of the more extreme terpene profiles of the 2010s into a single highly pungent expression. Dense, extremely resinous buds with an unmistakeable savory-sweet nose — garlic and diesel over a fruity-candy base. A polarising strain by design: the GMO garlic note dominates, which either defines or detracts depending on personal preference. Among the most pungent strains in the In House catalog alongside Slurricane and Terple.'},
+
+ // ── Cannabiogen (Vault) ──
+ {id:'destroyer',label:'Destroyer',type:'sativa',
+  origin:'Cannabiogen, Spain, ~2001',thc:[16,22],cbd:[0.1,0.2],
+  awards:[],breeder:'Cannabiogen',year:2001,
+  flower:[91,119],yld:'medium',avail:'seed',
+  terps:['terpinolene','myrcene','ocimene'],
+  parents:[],
+  desc:'Meao Thai × Mexico / Colombia. Cannabiogen (Spain). A landmark pure sativa from one of Europe\'s most respected landrace preservation breeders. Destroyer pairs authentic Meao Thai genetics — among the most prized regional Thai strains for cerebral potency — with Mexican and Colombian material, replicating the sativa crossing traditions of the 1970s in a stable seed form. Long-flowering (13–17 weeks), intensely cerebral, clear and energetic. The antithesis of modern indica-dominant boutique breeding. Beloved by old-school sativa enthusiasts and collectors of Cannabiogen\'s extensive landrace and first-generation hybrid catalog. Regularly cited alongside ACE Seeds\' releases as essential Spanish-school sativa breeding.'},
+
+ // ── Cookie Fam (Vault) ──
+ {id:'platinum-gsc',label:'Platinum GSC',type:'hybrid',
+  origin:'Cookie Fam Genetics, Bay Area, California, ~2013',thc:[20,26],cbd:[0.1,0.2],
+  awards:[],breeder:'Cookie Fam Genetics',year:2013,
+  flower:[56,63],yld:'medium',avail:'clone-only',
+  terps:['caryophyllene','limonene','myrcene'],
+  parents:[],
+  desc:'OG Kush × Girl Scout Cookies phenotype selection. Cookie Fam Genetics. Platinum GSC is a selected phenotype from the GSC population — distinguished from the parent by a more pronounced OG Kush influence in its aroma (stronger fuel and pine character) and heavier resin coverage, giving a distinctly platinum-white trichome appearance. Clone-only in authentic form. One of the Bay Area clone staples that circulated alongside the original GSC, Thin Mint, and Forum Cut. Deeply influential on the dispensary market of the 2010s and a precursor to the resin-stacking philosophy that would define the Seed Junky and Archive era.'},
+
+ // ── Sherbinski (Vault) ──
+ {id:'mochi',label:'Mochi / Gelato #47',type:'hybrid',
+  origin:'Sherbinski, Bay Area, California, ~2016',thc:[20,26],cbd:[0.1,0.2],
+  awards:[],breeder:'Sherbinski',year:2016,
+  flower:[56,63],yld:'medium',avail:'seed',
+  terps:['limonene','caryophyllene','linalool'],
+  parents:[],
+  desc:'Sunset Sherbet × Thin Mint GSC. Sherbinski. Mochi is the trade name for Gelato #47 — one of the numbered phenotypes in the Gelato breeding program by Sherbinski (the same breeder who developed Gelato alongside Cookie Fam). Where Gelato #33 (the primary commercial release) skews creamy-vanilla, Gelato #47 (Mochi) pushes toward a brighter, mintier, and slightly more floral expression — lemon-mint-cream over a cookie base. Sherbinski\'s Mochi became its own widely distributed strain, available as seed and separating from the broader Gelato label. Part of the foundational Bay Area dessert strain wave alongside Gelato, Sherbet, and Biscotti.'},
+
 ];
 const NXM={};
 NX.forEach(n=>NXM[n.id]=n);
@@ -3521,6 +3627,29 @@ function anc(id,v=new Set()){if(v.has(id))return v;v.add(id);(NM[id]?.parents||[
 function desc(id,v=new Set()){if(v.has(id))return v;v.add(id);N.forEach(m=>{if(m.parents.includes(id))desc(m.id,v);});return v;}
 function path(id){const p=[id],v=new Set([id]),q=[...(NM[id]?.parents||[])];while(q.length){const x=q.shift();if(!v.has(x)){v.add(x);p.push(x);(NM[x]?.parents||[]).forEach(pp=>{if(!v.has(pp))q.push(pp);});}};return p;}
 
+// ── Search aliases: common abbreviations and alternate spellings ──
+const SEARCH_ALIASES={
+  'gg4':'gorilla glue','gg#4':'gorilla glue',
+  'gsc':'girl scout cookies',
+  'ssh':'super silver haze','sscrh':'super silver haze',
+  'nl5':'northern lights','nl#5':'northern lights',
+  'ww':'white widow',
+  'gdp':'granddaddy purple',
+  'ak47':'ak-47','ak 47':'ak-47',
+  'chemdog':'chemdawg',
+  'zkittles':'zkittlez','skittles':'zkittlez','zkiltz':'zkittlez',
+  'icc':'ice cream cake',
+  'ppp':'purple punch',
+  'mac1':'mac 1',
+  'dosidos':'do-si-dos','dosi':'do-si-dos',
+  'sour d':'sour diesel','sour-d':'sour diesel',
+  'perm marker':'permanent marker','pm':'permanent marker',
+  'bd':'blue dream',
+  'wc':'wedding cake',
+  'og kush cut':'original og kush','og kush':'original og kush',
+  'trainwreck cut':'trainwreck',
+};
+
 function vis(){
   if(focusId){
     const family=anc(focusId);
@@ -3531,21 +3660,24 @@ function vis(){
     // Column visibility filter (skip when search active or focus mode)
     if(!search&&!focusId&&!colVis.has(n.col))return false;
     if(search){
+      // Resolve abbreviations/aliases to canonical search term
+      const es = SEARCH_ALIASES[search] || search; // effective search
       // Direct match on label, desc, origin, breeder, type
-      const direct = n.label.toLowerCase().includes(search)
-        || n.desc.toLowerCase().includes(search)
-        || (n.origin||'').toLowerCase().includes(search)
-        || (n.breeder||'').toLowerCase().includes(search)
-        || (n.type||'').toLowerCase().includes(search);
+      const direct = n.label.toLowerCase().includes(es)
+        || n.label.toLowerCase().includes(search)
+        || n.desc.toLowerCase().includes(es)
+        || (n.origin||'').toLowerCase().includes(es)
+        || (n.breeder||'').toLowerCase().includes(es)
+        || (n.type||'').toLowerCase().includes(es);
       if(direct) return true;
       // Terpene name match
-      const terpMatch = (n.terps||[]).some(t=>(TNAMES[t]||t).toLowerCase().includes(search));
+      const terpMatch = (n.terps||[]).some(t=>(TNAMES[t]||t).toLowerCase().includes(es)||(TNAMES[t]||t).toLowerCase().includes(search));
       if(terpMatch) return true;
       // Ancestral match — does this strain have the search term anywhere in its ancestry?
       const ancIds = anc(n.id);
       const ancMatch = [...ancIds].some(aid=>{
         const an = NM[aid];
-        return an && aid!==n.id && an.label.toLowerCase().includes(search);
+        return an && aid!==n.id && (an.label.toLowerCase().includes(es)||an.label.toLowerCase().includes(search));
       });
       if(ancMatch) return true;
       return false;
@@ -3854,6 +3986,22 @@ function showDetail(id,screenX,screenY){
   if(n.yld)addRow('yield',n.yld,'color:'+yieldColor+';font-weight:500');
   addRow('origin',n.origin);
   addRow('parents',parents);
+
+  // ── Descendants ("used in") ──
+  const children=N.filter(c=>c.parents&&c.parents.includes(n.id));
+  if(children.length){
+    const drow=document.createElement('div');drow.className='drow';drow.style.alignItems='flex-start';
+    const dk=document.createElement('span');dk.className='dkey';dk.textContent='used in';
+    const dv=document.createElement('span');dv.className='dval';
+    dv.style.cssText='display:flex;flex-wrap:wrap;gap:3px;padding-top:1px;';
+    children.forEach(c=>{
+      const chip=document.createElement('span');chip.className='path-crumb';
+      chip.textContent=c.label;
+      chip.onclick=()=>pick(c.id,null,null);
+      dv.appendChild(chip);
+    });
+    drow.appendChild(dk);drow.appendChild(dv);metaEl.appendChild(drow);
+  }
 
   // Cannabinoid bars
   const tw=Math.round((n.thc[1]/32)*100),cbw=Math.round((n.cbd[1]/22)*100);
@@ -6261,11 +6409,13 @@ function vaultRender() {
       (vaultTypeFilter === 'indica' && n.type === 'landrace');
     if (!typeOk) return false;
     if (!search) return true;
-    return n.label.toLowerCase().includes(search)
-      || (n.breeder||'').toLowerCase().includes(search)
-      || (n.desc||'').toLowerCase().includes(search)
-      || (n.terps||[]).some(t => (TNAMES[t]||t).toLowerCase().includes(search))
-      || (n.origin||'').toLowerCase().includes(search);
+    const es = SEARCH_ALIASES[search] || search;
+    return n.label.toLowerCase().includes(es)
+      || n.label.toLowerCase().includes(search)
+      || (n.breeder||'').toLowerCase().includes(es)
+      || (n.desc||'').toLowerCase().includes(es)
+      || (n.terps||[]).some(t => (TNAMES[t]||t).toLowerCase().includes(es))
+      || (n.origin||'').toLowerCase().includes(es);
   });
 
   // Sort
