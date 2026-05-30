@@ -781,7 +781,9 @@
   <button id="pg-mode-tab-sim" onclick="pgSwitchMode('sim')"
     style="font-family:'DM Mono',monospace;font-size:11px;padding:6px 18px;cursor:pointer;border:.5px solid var(--border2);border-left:none;background:transparent;color:var(--muted);border-radius:0;letter-spacing:.05em;">GROW SIM</button>
   <button id="pg-mode-tab-bx" onclick="pgSwitchMode('bx')"
-    style="font-family:'DM Mono',monospace;font-size:11px;padding:6px 18px;cursor:pointer;border:.5px solid var(--border2);border-left:none;background:transparent;color:var(--muted);border-radius:0 3px 3px 0;letter-spacing:.05em;">BX LAB</button>
+    style="font-family:'DM Mono',monospace;font-size:11px;padding:6px 18px;cursor:pointer;border:.5px solid var(--border2);border-left:none;background:transparent;color:var(--muted);border-radius:0;letter-spacing:.05em;">BX LAB</button>
+  <button id="pg-mode-tab-pheno" onclick="pgSwitchMode('pheno')"
+    style="font-family:'DM Mono',monospace;font-size:11px;padding:6px 18px;cursor:pointer;border:.5px solid var(--border2);border-left:none;background:transparent;color:var(--muted);border-radius:0 3px 3px 0;letter-spacing:.05em;">PHENO HUNT</button>
 </div>
 <div id="pg-mode-playground">
   <div style="display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;">
@@ -1139,6 +1141,10 @@
     </div>
     <button onclick="bxAnalyze()" style="font-family:'DM Mono',monospace;font-size:11px;padding:7px 20px;cursor:pointer;border:.5px solid var(--accent);background:rgba(168,159,110,0.1);border-radius:3px;color:var(--accent);letter-spacing:.04em;margin-bottom:20px;">Analyze →</button>
     <div id="bx-output" style="display:none;"></div>
+  </div>
+  <!-- PHENO HUNT -->
+  <div id="pg-mode-pheno" style="display:none;">
+    <div id="pheno-main"></div>
   </div>
 </div>
 
@@ -18803,17 +18809,29 @@ function _guideTrainingRender(){
       <circle cx="57" cy="56" r="5" fill="#5a7a5a" opacity=".6"/>
       <rect x="90" y="105" width="20" height="5" rx="2" fill="#6b4c2a"/>
     </svg>`,
-    topping:`<svg viewBox="0 0 200 120" style="width:100%;max-width:240px;display:block;">
-      <line x1="100" y1="115" x2="100" y2="40" stroke="#5a7a5a" stroke-width="3"/>
-      <line x1="85" y1="48" x2="115" y2="48" stroke="#e87" stroke-width="1.5" stroke-dasharray="3,2"/>
-      <text x="118" y="51" font-family="monospace" font-size="7" fill="#e87">cut</text>
-      <line x1="100" y1="48" x2="70" y2="25" stroke="#6fa06f" stroke-width="2"/>
-      <circle cx="67" cy="21" r="6" fill="#6fa06f"/>
-      <line x1="100" y1="48" x2="130" y2="25" stroke="#6fa06f" stroke-width="2"/>
-      <circle cx="133" cy="21" r="6" fill="#6fa06f"/>
-      <text x="55" y="15" font-family="monospace" font-size="7" fill="#a8996e">cola 1</text>
-      <text x="118" y="15" font-family="monospace" font-size="7" fill="#a8996e">cola 2</text>
-      <rect x="90" y="110" width="20" height="5" rx="2" fill="#6b4c2a"/>
+    topping:`<svg viewBox="0 0 200 130" style="width:100%;max-width:240px;display:block;">
+      <rect x="90" y="124" width="20" height="6" rx="2" fill="#6b4c2a"/>
+      <!-- kept stem below cut -->
+      <line x1="100" y1="124" x2="100" y2="52" stroke="#5a7a5a" stroke-width="3"/>
+      <!-- apex stem above cut (to be removed) -->
+      <line x1="100" y1="52" x2="100" y2="18" stroke="#e87" stroke-width="2" opacity=".45"/>
+      <circle cx="100" cy="11" r="7" fill="#e87" opacity=".3"/>
+      <text x="109" y="13" font-family="monospace" font-size="6" fill="#e87" opacity=".8">apex</text>
+      <!-- cut line at y=52, well below top of plant -->
+      <line x1="76" y1="52" x2="124" y2="52" stroke="#e87" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="126" y="55" font-family="monospace" font-size="7" fill="#e87">cut</text>
+      <!-- new colas emerging from node just below cut -->
+      <line x1="100" y1="62" x2="68" y2="32" stroke="#6fa06f" stroke-width="2"/>
+      <circle cx="65" cy="26" r="7" fill="#6fa06f"/>
+      <line x1="100" y1="62" x2="132" y2="32" stroke="#6fa06f" stroke-width="2"/>
+      <circle cx="135" cy="26" r="7" fill="#6fa06f"/>
+      <text x="44" y="22" font-family="monospace" font-size="7" fill="#a8996e">cola 1</text>
+      <text x="118" y="22" font-family="monospace" font-size="7" fill="#a8996e">cola 2</text>
+      <!-- lower side nodes -->
+      <line x1="100" y1="82" x2="75" y2="72" stroke="#5a7a5a" stroke-width="1.5"/>
+      <circle cx="72" cy="69" r="5" fill="#5a7a5a" opacity=".55"/>
+      <line x1="100" y1="102" x2="125" y2="92" stroke="#5a7a5a" stroke-width="1.5"/>
+      <circle cx="128" cy="89" r="5" fill="#5a7a5a" opacity=".45"/>
     </svg>`,
     fim:`<svg viewBox="0 0 200 120" style="width:100%;max-width:240px;display:block;">
       <line x1="100" y1="115" x2="100" y2="45" stroke="#5a7a5a" stroke-width="3"/>
@@ -19099,6 +19117,451 @@ function _guideHarvestRender(){
         </div>
       </div>
     </div>`;
+}
+
+/* ════════════════════════════════════════════════
+   PHENO HUNTER
+   ════════════════════════════════════════════════ */
+
+const PHENO_GOALS={
+  terp:    {icon:'🌿',label:'Terp Hunter',    desc:'Find the most pungent, complex-smelling phenotype'},
+  yield:   {icon:'📦',label:'Yield Hunter',   desc:'Find the heaviest-yielding, most productive pheno'},
+  potency: {icon:'💎',label:'Potency Hunter', desc:'Find the highest-THC, densest-bud phenotype'},
+  structure:{icon:'✂️',label:'Trim Hunter',   desc:'Find the best calyx-to-leaf ratio — easiest trim'}
+};
+const PHENO_SPECIAL={
+  'terp-explosion':      {icon:'💥',label:'Terp Explosion',       desc:'Noticeably more pungent than all siblings. Visible resin by week 4.'},
+  'exceptional-structure':{icon:'⭐',label:'Exceptional Structure',desc:"Outstanding calyx-to-leaf ratio. A pheno hunter's dream."},
+  'fast-finisher':       {icon:'⚡',label:'Fast Finisher',        desc:'7–10 days ahead of expected finish. Watch trichomes closely.'},
+  'purple-expression':   {icon:'💜',label:'Purple Expression',    desc:'Deep anthocyanin expression in final 2 weeks when temps drop.'}
+};
+const PHENO_TERP_SMELL={
+  myrcene:'earthy / mango',caryophyllene:'spicy / fuel',limonene:'citrus / lemon',
+  terpinolene:'floral / pine',pinene:'sharp pine',linalool:'floral / lavender',
+  humulene:'hoppy / earthy',ocimene:'sweet / tropical',bisabolol:'chamomile / light floral',
+  valencene:'fresh orange / citrus'
+};
+
+// ── State ──────────────────────────────────────────
+let _phenoState=null;
+let _phenoSS=null;          // setup: picked strain
+let _phenoPack=5;
+let _phenoGoal='terp';
+
+// ── Seeded RNG ─────────────────────────────────────
+function _phenoMkRng(seed){
+  let s=((seed*9301+49297)%233280+233280)%233280;
+  return function(){s=(s*9301+49297)%233280;return s/233280;};
+}
+
+// ── Trait generation ───────────────────────────────
+function _phenoGenSeed(strain,idx,huntSeed){
+  const rng=_phenoMkRng(huntSeed+idx*9973);
+  const r=()=>rng();
+  const type=strain.type||'hybrid';
+  const isInd=type==='indica'||type==='landrace';
+  const isSat=type==='sativa';
+  const isAuto=type==='auto';
+
+  const germs=r()<0.88;
+  if(!germs)return{id:idx+1,name:'Pheno #'+(idx+1),culled:false,flagged:false,keeper:false,savedName:'',germs:false,traits:null};
+
+  const vv=r(); const vigor=vv<0.25?'explosive':vv<0.8?'average':'weak';
+  const sv=r(); const structure=isInd?(sv<0.55?'compact':sv<0.9?'bushy':'tall'):
+    isSat?(sv<0.15?'compact':sv<0.45?'bushy':sv<0.8?'tall':'lanky'):
+    (sv<0.3?'compact':sv<0.65?'bushy':sv<0.85?'tall':'lanky');
+  const lv=r(); const leafShape=isInd?(lv<0.75?'broad':'mixed'):
+    isSat?(lv<0.7?'narrow':'mixed'):(lv<0.4?'broad':lv<0.7?'mixed':'narrow');
+  const nv=r(); const nodeSpacing=isInd?(nv<0.65?'tight':nv<0.9?'medium':'wide'):
+    isSat?(nv<0.15?'tight':nv<0.5?'medium':'wide'):(nv<0.35?'tight':nv<0.75?'medium':'wide');
+  const dv=r(); const density=isInd?(dv<0.65?'dense':dv<0.9?'medium':'airy'):
+    isSat?(dv<0.2?'dense':dv<0.55?'medium':'airy'):(dv<0.4?'dense':dv<0.78?'medium':'airy');
+  const cv=r(); const calyxRatio=cv<0.25?'high':cv<0.7?'medium':'low';
+  const purpleHint=(strain.desc||'').toLowerCase().includes('purple')||(strain.label||'').toLowerCase().includes('purple');
+  const colorV=r(); const colorDev=colorV<(purpleHint?0.45:0.08)?'purple':colorV<(purpleHint?0.65:0.55)?'orange pistils':'green';
+  const baseTerps=(strain.terps||['myrcene']).slice(0,4);
+  const terpShift=r()<0.18&&baseTerps.length>1;
+  const terps=terpShift?[baseTerps[1],baseTerps[0],...baseTerps.slice(2)]:baseTerps;
+  const tv=r(); const terpIntensity=tv<0.2?'pungent':tv<0.75?'average':'mild';
+  const thcBase=strain.thc?(strain.thc[0]+strain.thc[1])/2:18;
+  const thc=Math.round((thcBase+(r()*8-4))*10)/10;
+  const yBase={low:40,medium:58,high:75,'very high':90}[strain.yld]||58;
+  const yieldScore=Math.round(yBase*(0.78+r()*0.44));
+  const fBase=strain.flower?Math.round((strain.flower[0]+strain.flower[1])/2):63;
+  const flowerDays=Math.max(42,Math.round(fBase+(r()*14-7)));
+  const strBase=isInd?1.3:isSat?2.3:isAuto?1.1:1.7;
+  const stretchPct=Math.round((strBase*(0.82+r()*0.38)-1)*100);
+  const spV=r(); const specialTrait=spV<0.03?'terp-explosion':spV<0.06?'exceptional-structure':
+    spV<0.09?'fast-finisher':spV<0.12?'purple-expression':null;
+  const hermie=r()<0.04;
+
+  return{id:idx+1,name:'Pheno #'+(idx+1),culled:false,flagged:false,keeper:false,savedName:'',germs:true,
+    traits:{vigor,structure,leafShape,nodeSpacing,density,calyxRatio,colorDev,
+            terps,terpIntensity,thc,yieldScore,flowerDays,stretchPct,specialTrait,hermie}};
+}
+
+// ── Scoring ────────────────────────────────────────
+function _phenoScore(t,goal,strain){
+  if(!t)return 0;
+  let s=50;
+  if(t.vigor==='explosive')s+=5; if(t.vigor==='weak')s-=8;
+  if(goal==='terp'){
+    if(t.terpIntensity==='pungent')s+=22; else if(t.terpIntensity==='mild')s-=15;
+    if(strain.terps&&t.terps&&t.terps[0]===strain.terps[0])s+=5;
+    if(t.specialTrait==='terp-explosion')s+=12;
+  }
+  if(goal==='yield'){
+    const yBase={low:40,medium:58,high:75,'very high':90}[strain.yld]||58;
+    s+=Math.round((t.yieldScore-yBase)*0.35);
+    if(t.density==='dense')s+=7; if(t.structure==='bushy')s+=5;
+    if(t.vigor==='explosive')s+=5;
+  }
+  if(goal==='potency'){
+    const thcBase=strain.thc?(strain.thc[0]+strain.thc[1])/2:18;
+    s+=Math.round((t.thc-thcBase)*4);
+    if(t.calyxRatio==='high')s+=10; if(t.nodeSpacing==='tight')s+=5; if(t.density==='dense')s+=5;
+  }
+  if(goal==='structure'){
+    if(t.calyxRatio==='high')s+=22; else if(t.calyxRatio==='low')s-=12;
+    if(t.density==='dense')s+=10; else if(t.density==='airy')s-=8;
+    if(t.specialTrait==='exceptional-structure')s+=12;
+  }
+  if(t.hermie)s-=40;
+  if(t.specialTrait&&t.specialTrait!=='terp-explosion'&&t.specialTrait!=='exceptional-structure')s+=8;
+  return Math.max(0,Math.min(100,Math.round(s)));
+}
+
+// ── Highlight helper ───────────────────────────────
+function _phenoHL(key,val,goal){
+  const m={
+    terp:{terpIntensity:['pungent']},
+    yield:{vigor:['explosive'],density:['dense'],structure:['bushy','compact']},
+    potency:{calyxRatio:['high'],nodeSpacing:['tight'],density:['dense']},
+    structure:{calyxRatio:['high'],density:['dense']}
+  };
+  return !!(m[goal]&&m[goal][key]&&m[goal][key].includes(val));
+}
+
+// ── Phase progress bar ─────────────────────────────
+function _phenoProgress(phase){
+  const phases=['germ','veg','flower','results'];
+  const labels=['Germination','Veg','Flower','Results'];
+  return '<div style="display:flex;align-items:center;gap:0;margin-bottom:20px;">'+
+    phases.map((p,i)=>{
+      const done=phases.indexOf(phase)>i;
+      const curr=p===phase;
+      const col=done?'var(--accent)':curr?'var(--accent)':'var(--border2)';
+      const bg=curr?'rgba(168,159,110,0.15)':'transparent';
+      const tc=done||curr?'var(--accent)':'var(--muted)';
+      const dot=done?'✓':curr?'●':'○';
+      return (i>0?'<div style="flex:1;height:.5px;background:'+(done?'var(--accent)':'var(--border2)')+'"></div>':'')+
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 10px;background:'+bg+';border-radius:3px;border:.5px solid '+col+';">'+
+        '<span style="font-family:\'DM Mono\',monospace;font-size:10px;color:'+tc+';">'+dot+'</span>'+
+        '<span style="font-family:\'DM Mono\',monospace;font-size:7px;color:'+tc+';letter-spacing:.05em;white-space:nowrap;">'+labels[i].toUpperCase()+'</span>'+
+        '</div>';
+    }).join('')+'</div>';
+}
+
+// ── Single pheno card ──────────────────────────────
+function _phenoCardHtml(seed,phase,goal,strain){
+  const t=seed.traits;
+  const alive=seed.germs&&!seed.culled;
+  const bCol=seed.culled?'var(--border)':seed.keeper?'#4caf76':seed.flagged?'var(--accent)':'var(--border2)';
+  const bg=seed.culled?'rgba(0,0,0,0.25)':seed.keeper?'rgba(76,175,120,0.05)':'var(--bg2)';
+  const opacity=seed.culled||!seed.germs?'opacity:.45;':'';
+
+  const row=(lbl,val,key,locked,warn)=>{
+    if(locked)return '<div style="display:flex;justify-content:space-between;margin-bottom:4px;opacity:.25;"><span style="font-family:\'DM Mono\',monospace;font-size:8px;letter-spacing:.04em;color:var(--muted);">'+lbl+'</span><span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);">···</span></div>';
+    const hl=_phenoHL(key,val,goal);
+    const col=warn?'#e87':hl?'var(--accent)':'var(--muted)';
+    return '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;"><span style="font-family:\'DM Mono\',monospace;font-size:8px;letter-spacing:.04em;color:var(--muted);opacity:.55;">'+lbl+'</span><span style="font-family:\'DM Mono\',monospace;font-size:9px;color:'+col+';">'+val+(hl?' ✦':'')+'</span></div>';
+  };
+
+  const showVeg   = phase==='veg'||phase==='flower'||phase==='results';
+  const showFlower= phase==='flower'||phase==='results';
+  const showFull  = phase==='results';
+
+  let rows='';
+  if(!seed.germs){
+    rows='<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:#e87;margin:10px 0;text-align:center;">✗ failed to germinate</div>';
+  } else if(seed.culled){
+    rows='<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);opacity:.45;margin:10px 0;text-align:center;">culled</div>';
+  } else if(phase==='germ'){
+    rows='<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:#4caf76;margin:10px 0;text-align:center;">✓ tap root</div>';
+  } else {
+    // veg traits
+    rows+=row('VIGOR',t.vigor,'vigor',!showVeg);
+    rows+=row('STRUCTURE',t.structure,'structure',!showVeg);
+    rows+=row('LEAF',t.leafShape,'leafShape',!showVeg);
+    rows+=row('NODES',t.nodeSpacing,'nodeSpacing',!showVeg);
+    if(showVeg){
+      const sp='+'+t.stretchPct+'% predicted stretch';
+      rows+='<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--muted);opacity:.55;margin-bottom:4px;">'+sp+'</div>';
+      if(t.terpIntensity==='pungent')rows+='<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--accent);margin-bottom:4px;">🌿 strong aroma already</div>';
+    }
+    // flower traits
+    rows+=row('DENSITY',t.density,'density',!showFlower);
+    rows+=row('CALYX/LEAF',t.calyxRatio,'calyxRatio',!showFlower);
+    rows+=row('COLOR',t.colorDev,'colorDev',!showFlower);
+    if(showFlower){
+      if(t.hermie)rows+='<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:#e87;margin-bottom:4px;">⚠ hermie risk</div>';
+      const smellTerps=t.terps.slice(0,2).map(tt=>PHENO_TERP_SMELL[tt]||tt).join(' · ');
+      const smellPfx=t.terpIntensity==='pungent'?'🔥 ':t.terpIntensity==='mild'?'〰 ':'';
+      rows+='<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--muted);line-height:1.5;margin-bottom:4px;">'+smellPfx+smellTerps+'</div>';
+    }
+    // full harvest reveal
+    if(showFull){
+      rows+='<div style="height:.5px;background:var(--border);margin:7px 0;"></div>';
+      rows+=row('THC',t.thc+'%','thc',false);
+      rows+=row('TERPS',t.terps.slice(0,2).map(tt=>TNAMES[tt]||tt).join(' / '),'terps',false);
+      rows+=row('YIELD',t.yieldScore+'% of typical','yieldScore',false);
+      rows+=row('DAYS',t.flowerDays+' days to harvest','flowerDays',false);
+      if(t.specialTrait){
+        const sp=PHENO_SPECIAL[t.specialTrait];
+        rows+='<div style="margin-top:6px;padding:5px 8px;background:rgba(168,159,110,0.08);border:.5px solid rgba(168,159,110,0.3);border-radius:2px;">'+
+          '<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--accent);margin-bottom:2px;">'+sp.icon+' '+sp.label+'</div>'+
+          '<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--muted);line-height:1.4;">'+sp.desc+'</div></div>';
+      }
+      const sc=_phenoScore(t,goal,strain);
+      const scCol=sc>=75?'#4caf76':sc>=55?'var(--accent)':'var(--muted)';
+      rows+='<div style="margin-top:8px;"><div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--muted);letter-spacing:.04em;">'+PHENO_GOALS[goal].icon+' SCORE</span><span style="font-family:\'DM Mono\',monospace;font-size:11px;color:'+scCol+';font-weight:600;">'+sc+'<span style="font-size:8px;opacity:.6;">/100</span></span></div><div style="height:3px;background:var(--bg3);border-radius:2px;"><div style="height:100%;width:'+sc+'%;background:'+scCol+';border-radius:2px;"></div></div></div>';
+    }
+  }
+
+  // action buttons
+  let actions='';
+  if(alive&&phase!=='germ'&&phase!=='results'){
+    const fc=seed.flagged?'var(--accent)':'var(--border2)';
+    const fb=seed.flagged?'rgba(168,159,110,0.1)':'transparent';
+    actions='<div style="display:flex;gap:5px;margin-top:9px;">'+
+      '<button onclick="phenoFlag('+seed.id+')" style="font-family:\'DM Mono\',monospace;font-size:8px;padding:3px 8px;cursor:pointer;border:.5px solid '+fc+';background:'+fb+';border-radius:2px;color:'+fc+';">'+
+        (seed.flagged?'🚩 flagged':'🚩 flag')+'</button>'+
+      '<button onclick="phenoCull('+seed.id+')" style="font-family:\'DM Mono\',monospace;font-size:8px;padding:3px 8px;cursor:pointer;border:.5px solid var(--border2);background:transparent;border-radius:2px;color:var(--muted);">✗ cull</button>'+
+    '</div>';
+  }
+  if(alive&&phase==='results'){
+    const kc=seed.keeper?'#4caf76':'var(--border2)';
+    const kb=seed.keeper?'rgba(76,175,120,0.1)':'transparent';
+    actions='<button onclick="phenoPickKeeper('+seed.id+')" style="width:100%;font-family:\'DM Mono\',monospace;font-size:9px;padding:6px;cursor:pointer;margin-top:9px;border:.5px solid '+kc+';background:'+kb+';border-radius:2px;color:'+kc+';">'+
+      (seed.keeper?'✓ Keeper selected':'Select as Keeper')+'</button>';
+    if(seed.keeper){
+      actions+='<input type="text" placeholder="Name this pheno…  e.g. Gelato #33" value="'+(seed.savedName||'')+'" onchange="_phenoSaveName('+seed.id+',this.value)" '+
+        'style="width:100%;box-sizing:border-box;margin-top:5px;font-family:\'DM Mono\',monospace;font-size:9px;padding:5px 7px;background:var(--bg3);border:.5px solid var(--border2);border-radius:2px;color:var(--text);outline:none;">';
+    }
+  }
+
+  return '<div style="border:.5px solid '+bCol+';border-radius:4px;padding:11px;background:'+bg+';'+opacity+'">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;">'+
+      '<span style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--text);font-weight:500;">'+seed.name+'</span>'+
+      (seed.flagged&&!seed.culled?'<span style="font-size:10px;">🚩</span>':'')+''+
+      (seed.keeper?'<span style="font-family:\'DM Mono\',monospace;font-size:7px;color:#4caf76;border:.5px solid #4caf76;border-radius:2px;padding:1px 5px;">keeper</span>':'')+
+      (seed.culled?'<span style="font-family:\'DM Mono\',monospace;font-size:7px;color:var(--muted);opacity:.5;border:.5px solid var(--border);border-radius:2px;padding:1px 5px;">culled</span>':'')+
+    '</div>'+
+    rows+actions+
+  '</div>';
+}
+
+// ── Grid of pheno cards ────────────────────────────
+function _phenoGrid(phase,goal,strain){
+  const seeds=_phenoState.seeds;
+  return '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;margin-top:16px;">'+
+    seeds.map(s=>_phenoCardHtml(s,phase,goal,strain)).join('')+'</div>';
+}
+
+// ── Phase renders ──────────────────────────────────
+function _phenoRenderGerm(){
+  const el=document.getElementById('pheno-main');if(!el)return;
+  const st=_phenoState;
+  const alive=st.seeds.filter(s=>s.germs).length;
+  const dead=st.seeds.length-alive;
+  el.innerHTML=
+    _phenoProgress('germ')+
+    '<div style="font-family:\'DM Sans\',sans-serif;font-size:13px;color:var(--text);margin-bottom:3px;font-weight:600;">'+st.strain.label+'</div>'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);margin-bottom:14px;">'+
+      PHENO_GOALS[st.goal].icon+' '+PHENO_GOALS[st.goal].label+' &nbsp;·&nbsp; '+st.seeds.length+' beans &nbsp;·&nbsp; '+
+      '<span style="color:#4caf76;">'+alive+' sprouted</span>'+(dead?' &nbsp;·&nbsp; <span style="color:#e87;">'+dead+' failed</span>':'')+
+    '</div>'+
+    _phenoGrid('germ',st.goal,st.strain)+
+    (alive===0
+      ? '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:#e87;text-align:center;padding:20px 0;">All seeds failed. Rare but it happens — better luck next pack.</div>'+
+        '<button onclick="phenoReset()" style="font-family:\'DM Mono\',monospace;font-size:11px;padding:8px 24px;cursor:pointer;border:.5px solid var(--accent);background:rgba(168,159,110,0.1);border-radius:3px;color:var(--accent);letter-spacing:.05em;margin-top:10px;">Start Over</button>'
+      : '<div style="margin-top:18px;display:flex;align-items:center;gap:12px;">'+
+        '<button onclick="phenoAdvance()" style="font-family:\'DM Mono\',monospace;font-size:11px;padding:9px 24px;cursor:pointer;border:.5px solid var(--accent);background:rgba(168,159,110,0.12);border-radius:3px;color:var(--accent);letter-spacing:.05em;">Begin Veg →</button>'+
+        '<span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);">'+alive+' plants in the nursery</span></div>');
+}
+
+function _phenoRenderVeg(){
+  const el=document.getElementById('pheno-main');if(!el)return;
+  const st=_phenoState;
+  const alive=st.seeds.filter(s=>s.germs&&!s.culled).length;
+  el.innerHTML=
+    _phenoProgress('veg')+
+    '<div style="font-family:\'DM Sans\',sans-serif;font-size:13px;color:var(--text);margin-bottom:3px;font-weight:600;">'+st.strain.label+' — Vegetative Stage</div>'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);margin-bottom:4px;">'+PHENO_GOALS[st.goal].icon+' Goal: '+PHENO_GOALS[st.goal].desc+'</div>'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);opacity:.7;margin-bottom:14px;">Flag plants of interest. Cull anything you don\'t want to carry into flower.</div>'+
+    _phenoGrid('veg',st.goal,st.strain)+
+    '<div style="margin-top:18px;display:flex;align-items:center;gap:12px;">'+
+    '<button onclick="phenoAdvance()" '+(alive===0?'disabled':'')+' style="font-family:\'DM Mono\',monospace;font-size:11px;padding:9px 24px;cursor:pointer;border:.5px solid var(--accent);background:rgba(168,159,110,0.12);border-radius:3px;color:var(--accent);letter-spacing:.05em;'+(alive===0?'opacity:.4;cursor:not-allowed;':'')+'">Flip to Flower →</button>'+
+    '<span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);">'+alive+' plants entering flower</span></div>';
+}
+
+function _phenoRenderFlower(){
+  const el=document.getElementById('pheno-main');if(!el)return;
+  const st=_phenoState;
+  const alive=st.seeds.filter(s=>s.germs&&!s.culled).length;
+  el.innerHTML=
+    _phenoProgress('flower')+
+    '<div style="font-family:\'DM Sans\',sans-serif;font-size:13px;color:var(--text);margin-bottom:3px;font-weight:600;">'+st.strain.label+' — Flower Week 4–5</div>'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);margin-bottom:4px;">'+PHENO_GOALS[st.goal].icon+' Goal: '+PHENO_GOALS[st.goal].desc+'</div>'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);opacity:.7;margin-bottom:14px;">Bud structure, smell, and color are now becoming clear. Final cull opportunity before harvest.</div>'+
+    _phenoGrid('flower',st.goal,st.strain)+
+    '<div style="margin-top:18px;display:flex;align-items:center;gap:12px;">'+
+    '<button onclick="phenoAdvance()" '+(alive===0?'disabled':'')+' style="font-family:\'DM Mono\',monospace;font-size:11px;padding:9px 24px;cursor:pointer;border:.5px solid var(--accent);background:rgba(168,159,110,0.12);border-radius:3px;color:var(--accent);letter-spacing:.05em;'+(alive===0?'opacity:.4;cursor:not-allowed;':'')+'">Harvest →</button>'+
+    '<span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);">'+alive+' plants to harvest</span></div>';
+}
+
+function _phenoRenderResults(){
+  const el=document.getElementById('pheno-main');if(!el)return;
+  const st=_phenoState;
+  const alive=st.seeds.filter(s=>s.germs&&!s.culled);
+  const keeper=st.seeds.find(s=>s.keeper);
+  const best=alive.length?alive.reduce((a,b)=>_phenoScore(b.traits,st.goal,st.strain)>_phenoScore(a.traits,st.goal,st.strain)?b:a,alive[0]):null;
+
+  el.innerHTML=
+    _phenoProgress('results')+
+    '<div style="font-family:\'DM Sans\',sans-serif;font-size:13px;color:var(--text);margin-bottom:3px;font-weight:600;">'+st.strain.label+' — Harvest Results</div>'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);margin-bottom:4px;">'+PHENO_GOALS[st.goal].icon+' '+PHENO_GOALS[st.goal].label+'</div>'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);opacity:.7;margin-bottom:4px;">Full stats revealed. Select your keeper — the pheno you\'d clone and run again.</div>'+
+    (best&&!keeper?'<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--accent);opacity:.8;margin-bottom:14px;">Best match for your goal: '+best.name+' — scroll down and select it.</div>':
+     keeper?'<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:#4caf76;margin-bottom:14px;">Keeper selected: '+keeper.name+(keeper.savedName?' — "'+keeper.savedName+'"':'')+' ✓</div>':
+     '<div style="margin-bottom:14px;"></div>')+
+    _phenoGrid('results',st.goal,st.strain)+
+    '<div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">'+
+    '<button onclick="phenoReset()" style="font-family:\'DM Mono\',monospace;font-size:11px;padding:9px 20px;cursor:pointer;border:.5px solid var(--border2);background:transparent;border-radius:3px;color:var(--muted);letter-spacing:.05em;">New Hunt</button>'+
+    (keeper?'<button onclick="phenoSaveLab()" style="font-family:\'DM Mono\',monospace;font-size:11px;padding:9px 20px;cursor:pointer;border:.5px solid var(--accent);background:rgba(168,159,110,0.1);border-radius:3px;color:var(--accent);letter-spacing:.05em;">Send to Lab ⚗</button>':'')+
+    '</div>';
+}
+
+// ── Setup form ─────────────────────────────────────
+function _phenoRenderSetup(){
+  const el=document.getElementById('pheno-main');if(!el)return;
+  const btnStyle=(active)=>'font-family:\'DM Mono\',monospace;font-size:10px;padding:5px 14px;cursor:pointer;border:.5px solid '+(active?'var(--accent)':'var(--border2)')+';background:'+(active?'rgba(168,159,110,0.12)':'transparent')+';border-radius:2px;color:'+(active?'var(--accent)':'var(--muted)')+';letter-spacing:.04em;';
+  const packSizes=[3,5,10,20];
+  const packBtns=packSizes.map(n=>'<button onclick="_phenoSetPack('+n+')" style="'+btnStyle(n===_phenoPack)+'">'+n+' beans</button>').join('');
+  const goalBtns=Object.entries(PHENO_GOALS).map(([k,g])=>'<button onclick="_phenoSetGoal(\''+k+'\')" style="'+btnStyle(k===_phenoGoal)+'">'+g.icon+' '+g.label+'</button>').join('');
+
+  el.innerHTML=
+    '<div style="max-width:560px;">'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:13px;color:var(--accent);letter-spacing:.08em;margin-bottom:4px;">PHENO HUNT</div>'+
+    '<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:var(--muted);line-height:1.65;margin-bottom:22px;">Pop a pack, grow every seed, and find the keeper. Each phenotype expresses differently — your job is to spot it.</div>'+
+
+    '<div style="margin-bottom:18px;">'+
+      '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--accent);letter-spacing:.07em;margin-bottom:8px;">STRAIN</div>'+
+      '<div style="position:relative;">'+
+        '<input id="pheno-strain-search" type="text" placeholder="search vault strains…" value="'+(_phenoSS?_phenoSS.label:'')+'" oninput="_phenoSearchStrain(this.value)" autocomplete="off" '+
+          'style="width:100%;box-sizing:border-box;font-family:\'DM Mono\',monospace;font-size:11px;padding:7px 10px;background:var(--bg2);border:.5px solid var(--border2);border-radius:3px;color:var(--text);outline:none;">'+
+        '<div id="pheno-strain-results" style="display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg);border:.5px solid var(--border2);border-top:none;border-radius:0 0 3px 3px;max-height:180px;overflow-y:auto;z-index:200;"></div>'+
+      '</div>'+
+      (_phenoSS?'<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);margin-top:6px;opacity:.7;">'+_phenoSS.type+' · '+(_phenoSS.breeder||'unknown')+' · THC '+(_phenoSS.thc?_phenoSS.thc[0]+'-'+_phenoSS.thc[1]+'%':'—')+'</div>':'')+
+    '</div>'+
+
+    '<div style="margin-bottom:18px;">'+
+      '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--accent);letter-spacing:.07em;margin-bottom:8px;">PACK SIZE</div>'+
+      '<div style="display:flex;gap:6px;">'+packBtns+'</div>'+
+    '</div>'+
+
+    '<div style="margin-bottom:22px;">'+
+      '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--accent);letter-spacing:.07em;margin-bottom:8px;">HUNT GOAL</div>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+goalBtns+'</div>'+
+      '<div style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--muted);opacity:.65;margin-top:7px;">'+PHENO_GOALS[_phenoGoal].desc+'</div>'+
+    '</div>'+
+
+    '<button onclick="phenoStart()" '+ (!_phenoSS?'disabled':'') + ' style="font-family:\'DM Mono\',monospace;font-size:11px;padding:10px 28px;cursor:pointer;border:.5px solid var(--accent);background:rgba(168,159,110,0.12);border-radius:3px;color:var(--accent);letter-spacing:.05em;'+(!_phenoSS?'opacity:.4;cursor:not-allowed;':'')+'">Pop Seeds →</button>'+
+    '</div>';
+}
+
+function _phenoSearchStrain(q){
+  const res=document.getElementById('pheno-strain-results');if(!res)return;
+  if(!q||q.length<2){res.style.display='none';return;}
+  const ql=q.toLowerCase();
+  const pool=[...NX,...(N||[])].filter((n,i,a)=>a.findIndex(x=>x.id===n.id)===i);
+  const phits=pool.filter(n=>(n.label||'').toLowerCase().includes(ql)||(n.id||'').toLowerCase().includes(ql)).slice(0,14);
+  if(!phits.length){res.style.display='none';return;}
+  res.style.display='';
+  res.innerHTML=phits.map(n=>'<div onclick="_phenoPickStrain(\''+n.id+'\')" style="padding:7px 10px;font-family:\'DM Mono\',monospace;font-size:11px;color:var(--text);cursor:pointer;border-bottom:.5px solid var(--border);" onmouseover="this.style.background=\'var(--bg3)\'" onmouseout="this.style.background=\'\'">'+n.label+'<span style="font-size:9px;color:var(--muted);margin-left:8px;">'+n.type+'</span></div>').join('');
+}
+function _phenoPickStrain(id){
+  _phenoSS=NXM[id]||NM[id]||null;
+  const r=document.getElementById('pheno-strain-results');if(r)r.style.display='none';
+  _phenoRenderSetup();
+}
+function _phenoSetPack(n){_phenoPack=n;_phenoRenderSetup();}
+function _phenoSetGoal(g){_phenoGoal=g;_phenoRenderSetup();}
+
+// ── Start hunt ─────────────────────────────────────
+function phenoStart(){
+  if(!_phenoSS)return;
+  const huntSeed=Math.floor(Math.random()*999983);
+  _phenoState={
+    strain:_phenoSS,packSize:_phenoPack,goal:_phenoGoal,
+    phase:'germ',huntSeed,
+    seeds:Array.from({length:_phenoPack},(_,i)=>_phenoGenSeed(_phenoSS,i,huntSeed))
+  };
+  _phenoRenderGerm();
+}
+
+// ── Dispatch ───────────────────────────────────────
+function phenoRender(){
+  if(!_phenoState){_phenoRenderSetup();return;}
+  const ph=_phenoState.phase;
+  if(ph==='germ')_phenoRenderGerm();
+  else if(ph==='veg')_phenoRenderVeg();
+  else if(ph==='flower')_phenoRenderFlower();
+  else if(ph==='results')_phenoRenderResults();
+  else _phenoRenderSetup();
+}
+
+function phenoInit(){
+  const el=document.getElementById('pheno-main');if(!el)return;
+  phenoRender();
+}
+
+// ── Actions ────────────────────────────────────────
+function phenoAdvance(){
+  if(!_phenoState)return;
+  const next={germ:'veg',veg:'flower',flower:'results'};
+  _phenoState.phase=next[_phenoState.phase]||'results';
+  phenoRender();
+}
+function phenoCull(id){
+  if(!_phenoState)return;
+  const s=_phenoState.seeds.find(x=>x.id===id);
+  if(s&&!s.culled){s.culled=true;phenoRender();}
+}
+function phenoFlag(id){
+  if(!_phenoState)return;
+  const s=_phenoState.seeds.find(x=>x.id===id);
+  if(s){s.flagged=!s.flagged;phenoRender();}
+}
+function phenoPickKeeper(id){
+  if(!_phenoState)return;
+  _phenoState.seeds.forEach(s=>s.keeper=s.id===id&&!s.culled);
+  phenoRender();
+}
+function _phenoSaveName(id,val){
+  if(!_phenoState)return;
+  const s=_phenoState.seeds.find(x=>x.id===id);
+  if(s)s.savedName=val;
+}
+function phenoReset(){_phenoState=null;_phenoRenderSetup();}
+function phenoSaveLab(){
+  const keeper=_phenoState?.seeds.find(s=>s.keeper);
+  if(!keeper||!keeper.traits)return;
+  const n=_phenoState.strain;
+  labAdd(n.id);
+  const tabBtn=[...document.querySelectorAll('.tab-btn')].find(b=>b.textContent.trim()==='Playground');
+  if(tabBtn)switchTab('playground',tabBtn);
+  setTimeout(()=>pgSwitchMode('lab'),60);
 }
 
 function vaultAddToLab(id){
@@ -20036,11 +20499,11 @@ const TERP_DESC_LAB={myrcene:'earthy-mango-herbal',limonene:'citrus-lemon-bright
 const TYPE_COL_LAB={indica:'#7b6ec4',sativa:'#82b54b',hybrid:'#a89f6e',cbd:'#5bb870',auto:'#c4a35a',landrace:'#6b5ea8'};
 
 function pgSwitchMode(mode){
-  ['playground','lab','sim','bx'].forEach(m=>{
+  ['playground','lab','sim','bx','pheno'].forEach(m=>{
     const el=document.getElementById('pg-mode-'+m);
     if(el)el.style.display=m===mode?'':'none';
   });
-  const tabs={playground:'pg-mode-tab-playground',lab:'pg-mode-tab-lab',sim:'pg-mode-tab-sim',bx:'pg-mode-tab-bx'};
+  const tabs={playground:'pg-mode-tab-playground',lab:'pg-mode-tab-lab',sim:'pg-mode-tab-sim',bx:'pg-mode-tab-bx',pheno:'pg-mode-tab-pheno'};
   Object.entries(tabs).forEach(([m,id])=>{
     const b=document.getElementById(id);if(!b)return;
     const active=m===mode;
@@ -20053,6 +20516,9 @@ function pgSwitchMode(mode){
     if(typeof growRenderSetup==='function'){
       if(!growState)growRenderSetup();
     }
+  }
+  if(mode==='pheno'){
+    if(typeof phenoInit==='function')phenoInit();
   }
 }
 function labSearch(q){
