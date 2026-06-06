@@ -16483,15 +16483,8 @@ const NX=[
   terps:['caryophyllene','terpinolene','myrcene'],
   desc:'GSC × Trainwreck. Oregon Elite Seeds. GSC\'s sweet-dough cookie character meets Trainwreck\'s lemon-pine-menthol in a Pacific Northwest hybrid pairing. Trainwreck adds piney sharpness and vigor to GSC\'s typically denser, more compact structure — a higher-yielding, more energetic Cookie expression. 8–9 week finish. Uplifting, balanced effect.',
   era:'modern'},
- {id:'rogue-valley-og',label:'Rogue Valley OG',type:'hybrid',
-  origin:'Oregon Elite Seeds, Oregon, USA, ~2017',thc:[20,25],cbd:[0.1,0.2],
-  awards:[],breeder:'Oregon Elite Seeds',year:2017,
-  flower:[63,70],yld:'high',avail:'seed',
-  parents:['og-kush','jack-herer'],
-  terps:['caryophyllene','myrcene','pinene'],
-  desc:'OG Kush × Jack Herer. Oregon Elite Seeds. Named for the Rogue Valley AVA of southern Oregon — a region known for premium outdoor cannabis production. OG Kush\'s earthy-pine-fuel meets Jack Herer\'s spicy-pine in a Pacific Northwest OG hybrid suited to the long Rogue Valley growing season. Dense, resinous buds with classic OG structure and above-average yield. 9–10 week finish. Relaxing OG effect with energetic Jack Herer onset.',
-  era:'modern'},
-// --- Batch 10: Solfire Gardens ---label:'Grape Slushie',type:'hybrid',
+// --- Batch 10: Solfire Gardens ---
+ {id:'grape-slushie',label:'Grape Slushie',type:'hybrid',
   origin:'Solfire Gardens, USA, ~2020',thc:[20,26],cbd:[0.1,0.2],
   awards:[],breeder:'Solfire Gardens',year:2020,
   flower:[56,63],yld:'high',avail:'seed',
@@ -18995,7 +18988,6 @@ const GROW_DATA={
   'crater-lake-haze':{feed:'medium',stretch:'very high',diff:'intermediate',mold:'medium',ecV:[0.8,1.4],ecF:[1.0,1.6],notes:'Super Silver Haze × Trainwreck (Oregon Elite). Extreme stretch — outdoor or greenhouse strongly preferred. 10–12 weeks. Light feeder. Pacific NW long summer essential. Pine-citrus-spice terpene. Uplifting cerebral creative effect.'},
   'portland-punch':{feed:'medium',stretch:'medium',diff:'beginner',mold:'medium',ecV:[1.0,1.6],ecF:[1.4,2.0],notes:'Purple Punch × Trainwreck (Oregon Elite). Medium stretch, high yield. 8–9 weeks. Medium feeder. Cool nights intensify purple coloration. Good outdoor performer. RH under 50%. Grape-pine-candy terpene. Balanced relaxing-uplifting effect.'},
   'oregon-cookie':{feed:'medium',stretch:'medium',diff:'beginner',mold:'medium',ecV:[1.0,1.6],ecF:[1.4,2.0],notes:'GSC × Trainwreck (Oregon Elite). Medium stretch, high yield. 8–9 weeks. Medium feeder. Good outdoor Pacific NW performer. Trainwreck adds vigor and yield to GSC. RH under 50%. Cookie-pine-earth terpene. Uplifting balanced effect.'},
-  'rogue-valley-og':{feed:'medium',stretch:'medium',diff:'intermediate',mold:'medium',ecV:[1.2,1.8],ecF:[1.6,2.2],notes:'OG Kush × Jack Herer (Oregon Elite). Medium stretch, high yield. 9–10 weeks. Medium feeder. OG demands: cal-mag, RH under 45%. Outstanding outdoor performer in southern Oregon long season. Pine-spice-OG terpene. Relaxing OG effect with energetic Jack onset.'},
 };
 
 function anc(id,v=new Set()){if(v.has(id))return v;v.add(id);((NM[id]||NXM[id])?.parents||[]).forEach(p=>anc(p,v));return v;}
