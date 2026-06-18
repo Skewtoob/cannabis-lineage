@@ -1,0 +1,11 @@
+# Plume — only index.html + vendor/ are published.
+# Dev tooling & internal docs (keep private):
+tools/
+.claude/
+CLAUDE.md
+DOCUMENTATION_RUBRIC.md
+.overnight-queue.md
+
+# Old / backup builds:
+plume-with-grow.html
+grow-game.html
