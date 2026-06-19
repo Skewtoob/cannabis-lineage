@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Interactive cannabis genetics visualization — lineage bracket, origins map, strain comparison, and breeder's playground. 2,277 strains documented.">
-<title>Plume</title>
+<title>Strain Rabbit Hole</title>
 <script src="vendor/d3.min.js"></script>
 <script src="vendor/topojson.min.js"></script>
 <style>
@@ -348,7 +348,7 @@
 <body>
 <header>
   <div style="display:flex;align-items:center;gap:0;margin-bottom:14px;">
-    <h1 style="margin-bottom:0;">Plume</h1>
+    <h1 style="margin-bottom:0;">Strain Rabbit Hole</h1>
     <div id="tab-bar" style="margin-left:24px;display:flex;gap:2px;align-self:flex-end;">
       <button class="tab-btn active" onclick="switchTab('parents',this)" style="font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border:.5px solid var(--accent);border-radius:3px 3px 0 0;background:rgba(168,159,110,0.12);color:var(--accent);cursor:pointer;letter-spacing:.05em;">The Parents</button>
       <button class="tab-btn" onclick="switchTab('family',this)" style="font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 12px;border:.5px solid var(--border2);border-radius:3px 3px 0 0;background:transparent;color:var(--muted);cursor:pointer;letter-spacing:.05em;">The Family</button>
@@ -435,7 +435,7 @@
     <span onclick="hideAbout()" style="cursor:pointer;font-size:20px;color:var(--muted);line-height:1;padding:0 4px;">&times;</span>
   </div>
 
-  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.06em;margin-bottom:8px;">PLUME</div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.06em;margin-bottom:8px;">STRAIN RABBIT HOLE</div>
 
   <div style="font-size:13px;color:var(--text);line-height:1.8;margin-bottom:24px;">
     This tool was built entirely by <strong style="color:var(--accent);">Claude (claude-sonnet-4-6)</strong>, an AI assistant made by Anthropic. The human owner of this project does not know how to code and did not write any of the code, design any of the features, or conduct any of the underlying research.
@@ -25287,7 +25287,7 @@ function _cosmosBindEvents(){
 
 // ── First-run onboarding tour ─────────────────────────────────────────────────
 const _TOUR=[
- {t:'Welcome to Plume',b:'A reference vault for cannabis genetics — over 2,200 strains, their family trees, geographic origins, and the breeding tools to explore them all.<br><br><span style="color:rgba(168,159,110,0.85);">For education &amp; research only &middot; 18+ &middot; know the laws where you live.</span>',tab:null},
+ {t:'Welcome to Strain Rabbit Hole',b:'A reference vault for cannabis genetics — over 2,200 strains, their family trees, geographic origins, and the breeding tools to explore them all.<br><br><span style="color:rgba(168,159,110,0.85);">For education &amp; research only &middot; 18+ &middot; know the laws where you live.</span>',tab:null},
  {t:'The Parents',b:'The lineage canvas — 294 foundational strains across six eras, from ancient landraces to the new school. Click any node to trace where it came from and what it became.',tab:'parents'},
  {t:'The Family &amp; Visualize',b:'The full ~2,000-strain vault — search, filter, and open any strain. Then open the <strong>✦ Visualize</strong> menu for the big-picture views: <strong>Cosmos</strong> maps the whole genome as a star field you can fly through, with <strong>Sunburst</strong> (radial ancestry) and <strong>River</strong> (terpenes over time) alongside it.',tab:'family'},
  {t:'The Source',b:'Where it all began — an origins map with terpene zones, migration routes, breeder hubs, and a timeline you can scrub from the 1960s to today.',tab:'source'},
@@ -25306,7 +25306,7 @@ function _tourRender(){
   card.style.cssText='background:rgba(12,18,28,0.97);border:.5px solid rgba(168,159,110,0.4);border-radius:8px;padding:20px 22px 16px;width:min(440px,92vw);margin-bottom:max(40px,8vh);box-shadow:0 8px 40px rgba(0,0,0,0.6);font-family:IBM Plex Mono,monospace;';
   card.innerHTML=
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">'+
-      '<div style="font-size:9px;letter-spacing:.14em;color:rgba(168,159,110,0.7);">PLUME · TOUR '+(_tourI+1)+'/'+_TOUR.length+'</div>'+
+      '<div style="font-size:9px;letter-spacing:.14em;color:rgba(168,159,110,0.7);">STRAIN RABBIT HOLE · TOUR '+(_tourI+1)+'/'+_TOUR.length+'</div>'+
       '<span onclick="_tourEnd()" style="cursor:pointer;font-size:9px;color:rgba(206,202,184,0.5);letter-spacing:.05em;">skip ✕</span></div>'+
     '<div style="font-family:IBM Plex Sans,sans-serif;font-size:18px;font-weight:600;color:#ece4cc;margin-bottom:8px;">'+beat.t+'</div>'+
     '<div style="font-size:11px;line-height:1.7;color:rgba(214,210,196,0.92);margin-bottom:16px;">'+beat.b+'</div>'+
@@ -27900,13 +27900,13 @@ function _backupBuild(){
       try{data[k]=JSON.parse(raw);}catch(e){data[k]=raw;}
     }
   }
-  return JSON.stringify({_version:1,_app:'plume',_savedAt:new Date().toISOString(),_keys:Object.keys(data).length,data},null,2);
+  return JSON.stringify({_version:1,_app:'strain-rabbit-hole',_savedAt:new Date().toISOString(),_keys:Object.keys(data).length,data},null,2);
 }
 function _backupDownload(){
   const blob=new Blob([_backupBuild()],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;
-  a.download='plume-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.download='strain-rabbit-hole-backup-'+new Date().toISOString().slice(0,10)+'.json';
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
   localStorage.setItem('srh_last_backup',Date.now().toString());
   _backupStatusUpdate();
@@ -27915,7 +27915,7 @@ async function backupPickFile(){
   if(!_fsaSupported){_backupDownload();return;}
   try{
     _backupFileHandle=await window.showSaveFilePicker({
-      suggestedName:'plume-backup.json',
+      suggestedName:'strain-rabbit-hole-backup.json',
       types:[{description:'JSON Backup',accept:{'application/json':['.json']}}]
     });
     localStorage.setItem('srh_backup_filename',_backupFileHandle.name);
@@ -27955,7 +27955,7 @@ async function backupRestore(file){
     });
     colLoad();colUpdateHeaderBtn();_backupStatusUpdate();
     alert('✓ Restored '+count+' data entries.\n\nRefresh the page to fully apply all changes.');
-  }catch(e){alert('Could not read this file — make sure it is a valid Plume backup.');}
+  }catch(e){alert('Could not read this file — make sure it is a valid Strain Rabbit Hole backup.');}
 }
 function _backupStatusUpdate(){
   const el=document.getElementById('backup-status');
@@ -28018,12 +28018,12 @@ function showSaveModal(){
   document.body.appendChild(m);
 }
 function _saveExport(){
-  const data={version:1,app:'Plume',savedAt:new Date().toISOString(),keys:{}};
+  const data={version:1,app:'Strain Rabbit Hole',savedAt:new Date().toISOString(),keys:{}};
   _SAVE_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v)data.keys[k]=v;});
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;
-  a.download='plume-save-'+new Date().toISOString().slice(0,10)+'.json';
+  a.download='strain-rabbit-hole-save-'+new Date().toISOString().slice(0,10)+'.json';
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
